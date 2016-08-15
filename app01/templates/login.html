@@ -1,0 +1,25 @@
+{% load staticfiles %}
+<html>
+<head>
+    <link href="{% static 'dist/css/bootstrap-combined.min.css' %}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="span4 offset4 well">
+            <legend>请登录</legend>
+
+            <form method="POST" action="/login_check/" accept-charset="UTF-8">
+              {% csrf_token %}
+              <input type="text" id="username" class="span4" name="username" placeholder="Username">
+              <input type="password" id="password" class="span4" name="password" placeholder="Password">
+              <label class="checkbox">
+                  <input type="checkbox" name="remember" value="1"> 记住我
+              </label>
+              <button type="submit" name="submit" class="btn btn-info btn-block">登录</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

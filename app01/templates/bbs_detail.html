@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+{% load comments %}
+  {% block page-content %}
+  <div class="col-sm-4">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{bbs.title|safe}} </a></h3>
+      </div>
+      <div class="panel-body">
+        {{bbs.content|safe}}
+      </div>
+      <div class="panel-heading">
+        {{bbs.created_at|safe}}
+      </div>
+    </div>
+  </div><!-- /.col-sm-4 -->
+
+  <form action="/sub_comment/" method="POST">
+    <textarea cols="80" rows="3" name="comment_content"/></textarea>
+    <input type="hidden" name="bbs_id" value="{{bbs.id}}" />
+    <input type="submit" name="comment" id = "id_submit" />
+  </form>
+
+  {% get_comment_count for bbs as comment_count %}
+  一共有{{comment_count|safe}}条评论</br>
+
+  {% render_comment_list for bbs %}
+  {% endblock%}
