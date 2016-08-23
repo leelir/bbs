@@ -4,12 +4,23 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import auth
-from app01.models import Bbs, User_Comment, BBS_user
+from app01.models import Bbs, User_Comment, BBS_user, Category
 
 def index(request):
     bbs_list = Bbs.objects.all()
-    print bbs_list
-    return render_to_response('index.html',{'bbs_list': bbs_list,'user': request.user})
+    bbs_category = Category.objects.all()
+    return render_to_response('index.html',{
+                            'bbs_list': bbs_list,
+                            'user': request.user,
+                            'category':bbs_category})
+
+def category(request, cate_id):
+    bbs_list = Bbs.objects.filter(category__id = cate_id)
+    bbs_category = Category.objects.all()
+    return render_to_response('index.html',{
+                            'bbs_list': bbs_list,
+                            'user': request.user,
+                            'category':bbs_category})
 
 def bbs_detail(request, bbs_id):
     bbs = Bbs.objects.get(id = bbs_id)

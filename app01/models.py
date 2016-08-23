@@ -6,6 +6,7 @@ from django_comments.models import Comment
 
 
 class Bbs(models.Model):
+    category = models.ForeignKey('Category')
     title = models.CharField(max_length=64)
     summary = models.CharField(max_length=256, blank=True,null=True)
     content = models.TextField()
@@ -21,6 +22,9 @@ class Bbs(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=32,unique=True)
     administrator = models.ForeignKey('BBS_user')
+
+    def __unicode__(self):
+        return self.name
 
 class User_Comment(Comment):
     title = models.CharField(max_length=128)

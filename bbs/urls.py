@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from app01 import views
-from DjangoUeditor import urls
+from DjangoUeditor import urls as ueurls
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index),
@@ -25,7 +25,8 @@ urlpatterns = [
     url(r'^login/$', views.login),
     url(r'^login_check/$', views.login_check),
     url(r'^logout/$', views.logout),
-    url(r'^ueditor/', urls),
+    #url(r'^ueditor/', urls),
     url(r'^bbs_pub/$', views.bbs_pub),
     url(r'^bbs_sub/$', views.bbs_sub),
+    url(r'^category/(\d+)/$', views.category)
 ]
