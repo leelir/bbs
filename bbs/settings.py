@@ -132,22 +132,9 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'collect_static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 CKEDITOR_UPLOAD_PATH = "upload"
-
-UEDITOR_SETTINGS = {
-    'toolbars':{"testa":[['fullscreen', 'source', '|', 'undo', 'redo', '|','bold', 'italic', 'underline']],
-                "testb":[[ 'source', '|','bold', 'italic', 'underline']]
-                },
-    'images_upload':{
-        'max_size':0,
-        'path':"asd"
-    },
-    'scrawl_upload':{
-        'path':'scrawlabc'
-    }
-}
