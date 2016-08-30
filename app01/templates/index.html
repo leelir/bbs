@@ -39,10 +39,16 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/">全部帖子</a></li>
-            <li class="active"><a href="/bbs_pub">发帖</a></li>
+            <li class=""><a href="/">全部帖子</a></li>
+            <li class=""><a href="/bbs_pub">发帖</a></li>
             {% for cate in category %}
-              <li class="active"><a href="/category/{{cate.id}}">{{cate}}</a></li>  
+              {% ifequal cate.id cate_id %}
+                <li class="active"><a href="/category/{{cate.id}}">{{cate}}</a></li>
+              {% else %}
+                <li class=""><a href="/category/{{cate.id}}">{{cate}}</a></li>
+              {% endifequal %}
+
+
             {% endfor %}
 
             <li class="dropdown">
@@ -68,7 +74,7 @@
       <div class="page-header">
       </div>
         <div class="col-sm-4">
-          {%  for bbs in bbs_list %}
+          {%  for bbs in bbs_list reversed %}
           <div class="panel panel-primary">
             <div class="panel-heading">
               <h3 class="panel-title"><a href="/detail/{{bbs.id}}/" > {{bbs.title|safe}} </a></h3>
@@ -77,7 +83,7 @@
               {{bbs.summary|safe}}
             </div>
             <div class="panel-heading">
-              {{bbs.updated_at|safe}}
+              {{bbs_uptime|safe}}
             </div>
           </div>
           {% endfor %}

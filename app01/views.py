@@ -1,3 +1,6 @@
+from datetime import datetime
+import time
+
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
@@ -8,11 +11,15 @@ from app01.models import Bbs, User_Comment, BBS_user, Category
 
 def index(request):
     bbs_list = Bbs.objects.all()
+    for bbs in bbs_list:
+        bbs_uptime = datetime.fromtimestamp(time.mktime(bbs.updated_at.timetuple()) + 28800)
     bbs_category = Category.objects.all()
     return render_to_response('index.html',{
                             'bbs_list': bbs_list,
+                            'bbs_uptime': bbs_uptime,
                             'user': request.user,
-                            'category':bbs_category})
+                            'category':bbs_category,
+                            'cate_id': 0})
 
 def category(request, cate_id):
     bbs_list = Bbs.objects.filter(category__id = cate_id)
@@ -20,11 +27,13 @@ def category(request, cate_id):
     return render_to_response('index.html',{
                             'bbs_list': bbs_list,
                             'user': request.user,
-                            'category':bbs_category})
+                            'category':bbs_category,
+                            'cate_id': int(cate_id)})
 
 def bbs_detail(request, bbs_id):
     bbs = Bbs.objects.get(id = bbs_id)
-    return render_to_response('bbs_detail.html', {'bbs': bbs})
+    bbs_uptime = datetime.fromtimestamp(time.mktime(bbs.updated_at.timetuple()) + 28800)
+    return render_to_response('bbs_detail.html', {'bbs': bbs, 'bbs_uptime': bbs_uptime})
 
 @csrf_exempt
 def sub_comment(request):
@@ -86,6 +95,7 @@ def bbs_sub(request):
         content = bbs_content,
         author = author,
         view_count = '1',
-        ranking = '1'
+        ranking = '1',
+        category_id = '1'
     )
     return HttpResponseRedirect('/')

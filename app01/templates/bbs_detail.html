@@ -10,7 +10,7 @@
         {{bbs.content|safe}}
       </div>
       <div class="panel-heading">
-        {{bbs.created_at|safe}}
+        {{bbs_uptime|safe}}
       </div>
     </div>
   </div><!-- /.col-sm-4 -->
@@ -24,5 +24,12 @@
   {% get_comment_count for bbs as comment_count %}
   一共有{{comment_count|safe}}条评论</br>
 
-  {% render_comment_list for bbs %}
+  {% get_comment_list for bbs as comment_list %}
+    {% for comment in comment_list reversed %}
+        {{comment.submit_date}}
+        <br>
+        {{comment.comment}}
+        <hr>
+    {% endfor %}
+
   {% endblock%}
