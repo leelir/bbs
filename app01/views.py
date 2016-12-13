@@ -45,7 +45,9 @@ def sub_comment(request):
         bbs_id = request.POST.get('bbs_id')
         comment = request.POST.get('comment_content')
         User_Comment.objects.create(
-                content_type_id = 7,
+                content_type_id = 11,
+                # local content_type_id = 7
+                # server content_type_id = 11
                 site_id = 1,
                 user = request.user,
                 comment = comment,

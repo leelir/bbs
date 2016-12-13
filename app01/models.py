@@ -7,7 +7,7 @@ from django_comments.models import Comment
 
 class Bbs(models.Model):
     category = models.ForeignKey('Category')
-    title = models.CharField(max_length=64)
+    title = models.TextField()
     summary = models.CharField(max_length=256, blank=True,null=True)
     content = models.TextField()
     author = models.ForeignKey('BBS_user')
