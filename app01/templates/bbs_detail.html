@@ -1,35 +1,52 @@
 {% extends 'index.html' %}
+{% load staticfiles %}
 {% load comments %}
-  {% block page-content %}
-  <div class="col-sm-4">
-    <div class="panel panel-primary">
-      <div class="panel-heading">
-        <h3 class="panel-title">{{bbs.title|safe}} </a></h3>
-      </div>
-      <div class="panel-body">
-        {{bbs.content|safe}}
-      </div>
-      <div class="panel-heading">
-        {{bbs_uptime|safe}}
+{% block page-content %}
+
+<script src="{% static "tinymce/js/tinymce/tinymce.min.js" %}"></script>
+<script>
+tinymce.init({
+  selector: 'textarea',
+  height: 100,
+  menubar: false,
+  plugins: [
+    'advlist autolink lists link image charmap print preview anchor',
+    'searchreplace visualblocks code fullscreen',
+    'insertdatetime media table contextmenu paste code'
+  ],
+  toolbar: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+  content_css: '//www.tinymce.com/css/codepen.min.css'
+});
+</script>
+<div class="col-full-content">
+  <div class="saya">
+    <div class="main">
+      <div class="box type-saya">
+        <div class="clearfix typo content">
+          <br><br><br>
+          <h3 class="title">{{bbs.title|safe}}</h3>
+          {{bbs.content|safe}}
+          {{bbs_uptime|safe}}
+          <form action="/sub_comment/" method="POST">
+            <textarea cols="80" rows="3" name="comment_content"/></textarea>
+            <input type="hidden" name="bbs_id" value="{{bbs.id}}" />
+            <input type="submit" name="comment" id = "id_submit" />
+          </form>
+
+          {% get_comment_count for bbs as comment_count %}
+          一共有{{comment_count}}条 评论</br>
+
+          {% get_comment_list for bbs as comment_list %}
+            {% for comment in comment_list reversed %}
+                {{comment.submit_date}}
+                <br>
+                {{comment.comment|safe}}
+                <hr>
+            {% endfor %}
+          </div>
+        </div>
       </div>
     </div>
-  </div><!-- /.col-sm-4 -->
-
-  <form action="/sub_comment/" method="POST">
-    <textarea cols="80" rows="3" name="comment_content"/></textarea>
-    <input type="hidden" name="bbs_id" value="{{bbs.id}}" />
-    <input type="submit" name="comment" id = "id_submit" />
-  </form>
-
-  {% get_comment_count for bbs as comment_count %}
-  一共有{{comment_count|safe}}条评论</br>
-
-  {% get_comment_list for bbs as comment_list %}
-    {% for comment in comment_list reversed %}
-        {{comment.submit_date}}
-        <br>
-        {{comment.comment}}
-        <hr>
-    {% endfor %}
+  </div>
 
   {% endblock%}

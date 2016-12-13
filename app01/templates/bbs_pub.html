@@ -1,12 +1,12 @@
 {% extends "index.html" %}
 {% load staticfiles %}
-{% block page-content %}
+  {% block page-content %}
   <script src="{% static "tinymce/js/tinymce/tinymce.min.js" %}"></script>
   <script>
+
   tinymce.init({
   selector: "textarea",
-  relative_urls: false,
-  height: 500,
+  height: 200,
   plugins: [
     "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak spellchecker",
     "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
@@ -64,9 +64,30 @@
   ]
 });
     </script>
-</head>
-<form method="post" action="/bbs_sub/">
-  <textarea name="bbs_pub_content"></textarea>
-  <input type="submit" name="bbs_submit" id = "id_submit" />
-</form>
+
+<div class="col-full-content">
+  <div class="saya">
+    <div class="main">
+      <div class="box type-saya">
+        <div class="clearfix typo content">
+          <br><br><br>
+          <form method="post" action="/bbs_sub/">
+            <h1>选择分类</h1>
+            <select  name="bbs_pub_cate" >
+              {% for cate in category %}
+                  <option value={{cate.id}}>{{cate}}</option>
+              {% endfor %}
+            </select>
+            <h1>标题</h1>
+            <textarea name="bbs_pub_title"></textarea>
+            <h1>哔哔一下</h1>
+            <textarea name="bbs_pub_content"></textarea>
+            <p></p>
+            <input type="submit" name="bbs_submit" id = "id_submit"></input>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

@@ -10,13 +10,15 @@ from django.contrib import auth
 from app01.models import Bbs, User_Comment, BBS_user, Category
 
 def index(request):
+    bbs_uptime = []
     bbs_list = Bbs.objects.all()
-    for bbs in bbs_list:
-        bbs_uptime = datetime.fromtimestamp(time.mktime(bbs.updated_at.timetuple()) + 28800)
+    bbs_lee_list = Bbs.objects.filter(author_id = 1)
     bbs_category = Category.objects.all()
+    for bbs in bbs_list:
+        bbs.updated_at = datetime.fromtimestamp(time.mktime(bbs.updated_at.timetuple()) + 28800)
     return render_to_response('index.html',{
                             'bbs_list': bbs_list,
-                            'bbs_uptime': bbs_uptime,
+                            'bbs_lee_list': bbs_lee_list,
                             'user': request.user,
                             'category':bbs_category,
                             'cate_id': 0})
@@ -32,8 +34,10 @@ def category(request, cate_id):
 
 def bbs_detail(request, bbs_id):
     bbs = Bbs.objects.get(id = bbs_id)
+    bbs_category = Category.objects.all()
     bbs_uptime = datetime.fromtimestamp(time.mktime(bbs.updated_at.timetuple()) + 28800)
-    return render_to_response('bbs_detail.html', {'bbs': bbs, 'bbs_uptime': bbs_uptime})
+    return render_to_response('bbs_detail.html', {'bbs': bbs,'user': request.user,
+    'category':bbs_category,'bbs_uptime': bbs_uptime})
 
 @csrf_exempt
 def sub_comment(request):
@@ -58,6 +62,7 @@ def login(request):
         return render_to_response('login.html')
 
 @csrf_exempt
+
 def login_check(request):
     if request.method != 'POST':
         raise Http404('Only POST method allowed')
@@ -81,21 +86,24 @@ def logout(request):
 
 def bbs_pub(request):
     if request.user.is_authenticated():
-        return render_to_response('bbs_pub.html')
+        bbs_category = Category.objects.all()
+        return render_to_response('bbs_pub.html',{'user': request.user,'category':bbs_category})
     else:
         return render_to_response('login.html')
 
 @csrf_exempt
 def bbs_sub(request):
+    bbs_title = request.POST.get('bbs_pub_title')
+    bbs_category = request.POST.get('bbs_pub_cate')
     bbs_content = request.POST.get('bbs_pub_content')
     author = BBS_user.objects.get(user__username = request.user)
     Bbs.objects.create(
-        title = 'Test title',
-        summary = 'Test summary',
+        title = bbs_title,
+        summary = bbs_content,
         content = bbs_content,
         author = author,
         view_count = '1',
         ranking = '1',
-        category_id = '1'
+        category_id = bbs_category
     )
     return HttpResponseRedirect('/')
