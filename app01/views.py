@@ -25,9 +25,11 @@ def index(request):
 
 def category(request, cate_id):
     bbs_list = Bbs.objects.filter(category__id = cate_id)
+    bbs_lee_list = Bbs.objects.filter(author_id = 1)
     bbs_category = Category.objects.all()
     return render_to_response('index.html',{
                             'bbs_list': bbs_list,
+                            'bbs_lee_list': bbs_lee_list,
                             'user': request.user,
                             'category':bbs_category,
                             'cate_id': int(cate_id)})
